@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="Canvas_Application" default="CanvasApp">
+	<description>ANT build file to compile, run, and test the code</description>
+	<property name="src" location="src" />
+	<property name="testsrc" location="testsrc" />
+	<property name="bin" location="bin" />
+	<property name="jars" location="jars" />
+    <property name="junit.output.dir" location="bin"/>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="lib/junit.jar"/>
+        <pathelement location="lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+        <pathelement location="bin" />
+    </path>
+	<target name="clean">
+		<delete dir="${bin}" />
+		<delete dir="${jars}" />
+	</target>
+	<target description="Build all projects which reference this project. Useful to propagate changes." name="compile" depends="clean">
+		<mkdir dir="${bin}" />
+		<javac srcdir="${src}" destdir="${bin}" includeantruntime="false" />
+		<javac includeantruntime="false" srcdir="${testsrc}" destdir="${bin}">
+			<classpath refid="JUnit 4.libraryclasspath" />
+		</javac>
+	</target>
+	<target name="jar" depends="compile">
+		<mkdir dir="${jars}" />
+		<jar destfile="${jars}/Canvas_Application.jar" basedir="${bin}">
+			<manifest>
+				<attribute name="Main-Class" value="nyu.edu.cs.pqs.impl.InitCanvasApp" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="run" depends="jar">
+		<java jar="${jars}/Canvas_Application.jar" fork="true" />
+	</target>
+	<target name="unittest" depends="compile">
+		<junit haltonfailure="no" printsummary="true">
+			<classpath refid="JUnit 4.libraryclasspath" />
+			<test name="nyu.edu.cs.pqs.impl.TestCanvas" />
+		</junit>
+	</target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+	<target name="CanvasApp" depends="run">
+		<description>Default is to compile and run the Canvas Drawing Application</description>
+	</target>
+</project>

@@ -1,0 +1,7 @@
+The game is played by two players who alternate dropping chips into a 7-column, 6-row grid. 
+The first player to get 4 in a row wins.
+When playing in Double Player mode, two windows pop up on top of each other.
+Please move top window to side to be able to view both windows.
+
+The test cases pass when run independently.
+If all 6 JUnit test classes are executed together, some test cases may fail.
